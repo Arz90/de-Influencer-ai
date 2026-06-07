@@ -11,6 +11,8 @@ const DI_REWRITTEN_ATTR = 'data-di-rewritten';
 
 let currentUrl = location.href;
 let spaNavInterval = null;
+let feedObserver = null;
+let rewriteDebounceTimer = null;
 
 function log(...args) {
   if (DEBUG) console.log('[DI YouTube]', ...args);
@@ -41,19 +43,44 @@ function observeSpaNavigation() {
 
 // ─── Manejador de cambio de página ───────────────────────────────
 function handlePageChange() {
-  rewriteFeedTitles();
+  if (isWatchPage()) {
+    // En página de vídeo no necesitamos el observer del feed
+    if (feedObserver) {
+      feedObserver.disconnect();
+      feedObserver = null;
+      log('MutationObserver del feed desconectado (página de vídeo)');
+    }
+    log('Página de vídeo detectada — buscando elemento player');
+    // #player-container-inner es el contenedor interno; #movie_player es el elemento de vídeo en sí.
+    // Se prueban ambos para manejar las variaciones del DOM de YouTube según el tipo de página.
+    waitForElement('#movie_player, #player-container-inner', (playerEl) => {
+      log('Player encontrado — procediendo a inyectar banner');
+      injectBanner(playerEl);
+    });
+  } else {
+    log('Página actual no es un vídeo — iniciando observación del feed para títulos');
+    observeFeedTitles();
+  }
+}
 
-  if (!isWatchPage()) {
-    log('Página actual no es un vídeo — omitiendo inyección de banner');
-    return;
+// ─── Observer de títulos del feed (lazy-render de YouTube) ───────
+// YouTube renderiza los títulos de forma diferida. Un MutationObserver
+// sobre el contenedor del feed captura los elementos cuando aparecen.
+// Debounce de 200ms para evitar disparos excesivos durante el scroll.
+function observeFeedTitles() {
+  if (feedObserver) {
+    feedObserver.disconnect();
+    feedObserver = null;
   }
 
-  log('Página de vídeo detectada — buscando elemento player');
-  // #player-container-inner es el contenedor interno; #movie_player es el elemento de vídeo en sí.
-  // Se prueban ambos para manejar las variaciones del DOM de YouTube según el tipo de página.
-  waitForElement('#movie_player, #player-container-inner', (playerEl) => {
-    log('Player encontrado — procediendo a inyectar banner');
-    injectBanner(playerEl);
+  waitForElement('#contents, ytd-browse', (container) => {
+    feedObserver = new MutationObserver(() => {
+      clearTimeout(rewriteDebounceTimer);
+      rewriteDebounceTimer = setTimeout(rewriteFeedTitles, 200);
+    });
+    feedObserver.observe(container, { childList: true, subtree: true });
+    log('MutationObserver conectado al feed — esperando títulos');
+    rewriteFeedTitles(); // intento inmediato por si ya hay títulos cargados
   });
 }
 
