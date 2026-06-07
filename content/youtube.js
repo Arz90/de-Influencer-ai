@@ -9,6 +9,7 @@ const DI_INJECTED_ATTR = 'data-di-injected';
 const DI_REWRITTEN_ATTR = 'data-di-rewritten';
 
 let currentUrl = location.href;
+let spaNavInterval = null;
 
 // ─── Entry Point ────────────────────────────────────────────────
 function init() {
@@ -21,7 +22,7 @@ function init() {
 // URL polling is simpler and more reliable than a MutationObserver on ytd-app
 // for detecting /watch navigation specifically. Phase 3 may refine this.
 function observeSpaNavigation() {
-  setInterval(() => {
+  spaNavInterval = setInterval(() => {
     if (location.href !== currentUrl) {
       currentUrl = location.href;
       handlePageChange();

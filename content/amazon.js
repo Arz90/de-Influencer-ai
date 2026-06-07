@@ -104,7 +104,7 @@ function buildUpgradePrompt() {
 
 // ─── Helpers ─────────────────────────────────────────────────────
 function isProductPage() {
-  return /\/dp\/[A-Z0-9]{10}/.test(location.pathname) || location.pathname.includes('/dp/');
+  return /\/dp\/[A-Z0-9]{10}/i.test(location.pathname);
 }
 
 function waitForElement(selector, callback, maxAttempts = 20) {
