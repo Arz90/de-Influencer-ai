@@ -14,9 +14,7 @@ let spaNavInterval = null;
 let feedObserver = null;
 let rewriteDebounceTimer = null;
 
-function log(...args) {
-  if (DEBUG) console.log('[DI YouTube]', ...args);
-}
+function log(...args) { diLog('[DI YouTube]', DEBUG, ...args); }
 
 log('Script cargado en', location.href);
 
@@ -187,20 +185,6 @@ function buildUpgradePrompt() {
 // ─── Helpers ─────────────────────────────────────────────────────
 function isWatchPage() {
   return location.pathname === '/watch';
-}
-
-function waitForElement(selector, callback, maxAttempts = 20) {
-  let attempts = 0;
-  const interval = setInterval(() => {
-    const el = document.querySelector(selector);
-    if (el) {
-      clearInterval(interval);
-      callback(el);
-    } else if (++attempts >= maxAttempts) {
-      clearInterval(interval);
-      console.warn('[DI YouTube] Elemento no encontrado tras', maxAttempts, 'intentos:', selector);
-    }
-  }, 300);
 }
 
 // ─── Inicio ───────────────────────────────────────────────────────
