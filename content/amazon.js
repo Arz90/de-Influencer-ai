@@ -8,9 +8,7 @@ const DEBUG = true;
 const DI_DAILY_LIMIT = 5;
 const DI_INJECTED_ATTR = 'data-di-injected';
 
-function log(...args) {
-  if (DEBUG) console.log('[DI Amazon]', ...args);
-}
+function log(...args) { diLog('[DI Amazon]', DEBUG, ...args); }
 
 log('Script cargado en', location.href);
 
@@ -131,20 +129,6 @@ function buildUpgradePrompt() {
 // ─── Helpers ──────────────────────────────────────────────────────
 function isProductPage() {
   return /\/dp\/[A-Z0-9]{10}/i.test(location.pathname);
-}
-
-function waitForElement(selector, callback, maxAttempts = 20) {
-  let attempts = 0;
-  const interval = setInterval(() => {
-    const el = document.querySelector(selector);
-    if (el) {
-      clearInterval(interval);
-      callback(el);
-    } else if (++attempts >= maxAttempts) {
-      clearInterval(interval);
-      console.warn('[DI Amazon] Elemento no encontrado tras', maxAttempts, 'intentos:', selector);
-    }
-  }, 300);
 }
 
 // ─── Inicio ───────────────────────────────────────────────────────
