@@ -154,16 +154,17 @@ function buildBanner() {
   const div = document.createElement('div');
   div.className = 'di-banner';
   div.setAttribute(DI_INJECTED_ATTR, 'true');
-  // Fase 1: texto de marcador. Fase 3: sustituido por la salida real de la IA
+  // Fase 1: texto de marcador con tono de marca. Fase 3: sustituido por la salida real de la IA
   div.innerHTML = `
     <div class="di-banner__icon">&#9888;</div>
     <div class="di-banner__content">
-      <div class="di-banner__title">De-Influencer AI &mdash; An&aacute;lisis</div>
+      <div class="di-banner__title">De-Influencer AI &mdash; Alerta de Marketing</div>
       <div class="di-banner__body">
-        Analizando video... (An&aacute;lisis completo disponible en Fase 3 con IA integrada)
+        <strong>Este video contiene t&eacute;cnicas de persuasi&oacute;n.</strong>
+        El an&aacute;lisis completo (patrocinadores, clickbait, manipulaci&oacute;n emocional) llega en la Fase 3.
       </div>
     </div>
-    <span class="di-banner__badge">ESCANEADO</span>
+    <span class="di-banner__badge">VIGILANDO</span>
   `;
   return div;
 }
