@@ -21,6 +21,7 @@
   --di-red-light: #ff5555;
   --di-red-lighter: #ff9999;
   --di-white: #ffffff;
+  --di-reddit: #ff4500;
 }
 
 /* ─── Banner Brutal Card (YouTube) ──────────────── */
@@ -235,4 +236,115 @@
   cursor: pointer;
   white-space: nowrap;
   font-family: var(--di-font-mono);
+}
+
+/* ─── Google Search — Banner Reddit ───────── */
+.di-google-banner {
+  background: var(--di-bg);
+  border: 1px solid var(--di-border);
+  border-left: 3px solid var(--di-reddit);
+  border-radius: var(--di-radius);
+  padding: 9px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+  font-family: var(--di-font-mono);
+}
+
+.di-google-banner__badge {
+  background: var(--di-reddit);
+  color: var(--di-white);
+  font-size: 0.62rem;
+  font-weight: 900;
+  padding: 3px 7px;
+  border-radius: 3px;
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.di-google-banner__text {
+  flex: 1;
+  font-size: 0.75rem;
+  color: var(--di-text-dim);
+  line-height: 1.5;
+}
+
+/* NOTA: strong sustituido por clase BEM en Phase 3 */
+.di-google-banner__text strong {
+  color: var(--di-text);
+}
+
+.di-google-banner__cta {
+  background: var(--di-reddit);
+  color: var(--di-white);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  white-space: nowrap;
+  font-family: var(--di-font-mono);
+  flex-shrink: 0;
+}
+
+.di-google-banner__cta:hover {
+  opacity: 0.85;
+}
+
+/* ─── Google Search — Blur Overlay ─────────── */
+.di-google-blurred {
+  filter: blur(3px);
+  user-select: none;
+  pointer-events: none;
+}
+
+.di-google-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255, 255, 255, 0.78);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+.di-google-badge {
+  background: var(--di-red);
+  color: var(--di-white);
+  font-size: 0.62rem;
+  font-weight: 900;
+  padding: 3px 7px;
+  border-radius: 3px;
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+  font-family: var(--di-font-mono);
+  flex-shrink: 0;
+}
+
+.di-google-overlay__text {
+  font-size: 0.72rem;
+  color: #333;
+  font-family: var(--di-font-mono);
+}
+
+.di-google-overlay__reveal {
+  margin-left: auto;
+  font-size: 0.65rem;
+  color: #666;
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+  border: none;
+  white-space: nowrap;
+  font-family: var(--di-font-mono);
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.di-google-overlay__reveal:hover {
+  color: #333;
 }
