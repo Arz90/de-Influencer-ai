@@ -1,29 +1,44 @@
 /**
- * De-Influencer AI — Amazon Module
- * Phase 1: Panel Lateral skeleton with placeholder analysis
- * Phase 3: Real AI analysis of 1-2 star reviews
+ * De-Influencer AI — Módulo Amazon
+ * Fase 1: esqueleto del Panel Lateral con análisis de marcador
+ * Fase 3: Análisis real de IA sobre reseñas de 1-2 estrellas
  */
 
+const DEBUG = true;
 const DI_DAILY_LIMIT = 5;
 const DI_INJECTED_ATTR = 'data-di-injected';
 
-// ─── Entry Point ─────────────────────────────────────────────────
-function init() {
-  if (!isProductPage()) return;
+function log(...args) {
+  if (DEBUG) console.log('[DI Amazon]', ...args);
+}
 
-  // Try multiple selectors — Amazon's layout varies by locale
+log('Script cargado en', location.href);
+
+// ─── Punto de entrada ─────────────────────────────────────────────
+function init() {
+  if (!isProductPage()) {
+    log('Página actual no es una página de producto — módulo inactivo');
+    return;
+  }
+
+  log('Página de producto detectada — buscando elemento objetivo');
+  // Se prueban múltiples selectores — el layout de Amazon varía según el idioma/región
   waitForElement('#desktop-dp-sims, #rightCol, #buybox', (targetEl) => {
+    log('Elemento objetivo encontrado:', targetEl.id || targetEl.className);
     injectPanel(targetEl);
   });
 }
 
-// ─── Panel Injection ─────────────────────────────────────────────
+// ─── Inyección del panel ──────────────────────────────────────────
 function injectPanel(targetEl) {
-  if (document.querySelector(`.di-panel[${DI_INJECTED_ATTR}], .di-upgrade[${DI_INJECTED_ATTR}]`)) return;
+  if (document.querySelector(`.di-panel[${DI_INJECTED_ATTR}], .di-upgrade[${DI_INJECTED_ATTR}]`)) {
+    log('Panel ya inyectado en esta página — omitiendo');
+    return;
+  }
 
   chrome.storage.local.get(['usageCount', 'isPro'], (data) => {
     if (chrome.runtime.lastError) {
-      console.warn('[DI] Amazon: storage read failed, skipping injection');
+      console.warn('[DI Amazon] Error al leer almacenamiento — omitiendo inyección:', chrome.runtime.lastError);
       return;
     }
 
@@ -31,25 +46,36 @@ function injectPanel(targetEl) {
     const isPro = data.isPro || false;
     const limitReached = usageCount >= DI_DAILY_LIMIT && !isPro;
 
+    log('Almacenamiento leído — usageCount:', usageCount, '| isPro:', isPro, '| límite alcanzado:', limitReached);
+
+    if (limitReached) {
+      log('Límite diario alcanzado — mostrando prompt de upgrade');
+    } else {
+      log('Dentro del límite — inyectando panel de análisis');
+    }
+
     const el = limitReached ? buildUpgradePrompt() : buildPanel();
     targetEl.insertAdjacentElement('afterend', el);
+    log('Panel inyectado correctamente en el DOM');
 
     if (!limitReached) {
       chrome.storage.local.set({ usageCount: usageCount + 1 }, () => {
         if (chrome.runtime.lastError) {
-          console.warn('[DI] Amazon: storage write failed:', chrome.runtime.lastError);
+          console.warn('[DI Amazon] Error al incrementar contador:', chrome.runtime.lastError);
+          return;
         }
+        log('Contador incrementado a', usageCount + 1);
       });
     }
   });
 }
 
-// ─── Panel Lateral ───────────────────────────────────────────────
+// ─── Panel Lateral ────────────────────────────────────────────────
 function buildPanel() {
   const div = document.createElement('div');
   div.className = 'di-panel';
   div.setAttribute(DI_INJECTED_ATTR, 'true');
-  // Phase 1: placeholder data. Phase 3: real review analysis from AI
+  // Fase 1: datos de marcador. Fase 3: análisis real de reseñas mediante IA
   div.innerHTML = `
     <div class="di-panel__header">
       <span class="di-panel__logo">De-Influencer</span>
@@ -87,7 +113,7 @@ function buildPanel() {
   return div;
 }
 
-// ─── Upgrade Prompt ──────────────────────────────────────────────
+// ─── Prompt de upgrade ────────────────────────────────────────────
 function buildUpgradePrompt() {
   const div = document.createElement('div');
   div.className = 'di-upgrade';
@@ -102,7 +128,7 @@ function buildUpgradePrompt() {
   return div;
 }
 
-// ─── Helpers ─────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────
 function isProductPage() {
   return /\/dp\/[A-Z0-9]{10}/i.test(location.pathname);
 }
@@ -116,10 +142,10 @@ function waitForElement(selector, callback, maxAttempts = 20) {
       callback(el);
     } else if (++attempts >= maxAttempts) {
       clearInterval(interval);
-      console.warn('[DI] Amazon: element not found:', selector);
+      console.warn('[DI Amazon] Elemento no encontrado tras', maxAttempts, 'intentos:', selector);
     }
   }, 300);
 }
 
-// ─── Start ───────────────────────────────────────────────────────
+// ─── Inicio ───────────────────────────────────────────────────────
 init();

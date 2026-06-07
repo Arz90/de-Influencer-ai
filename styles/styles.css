@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════
-   De-Influencer AI — Design System
-   Cyber-Punk Alert Aesthetic
+   De-Influencer AI — Sistema de Diseño
+   Estética Alerta Cyber-Punk
    ════════════════════════════════════════════════ */
 
 :root {
@@ -23,7 +23,7 @@
   --di-white: #ffffff;
 }
 
-/* ─── Brutal Card Banner (YouTube) ─────────────── */
+/* ─── Banner Brutal Card (YouTube) ──────────────── */
 .di-banner {
   width: 100%;
   background: var(--di-bg-card);
@@ -95,7 +95,7 @@
   font-family: var(--di-font-mono);
 }
 
-/* ─── Amazon Lateral Panel ──────────────────────── */
+/* ─── Panel Lateral de Amazon ───────────────────── */
 .di-panel {
   background: var(--di-bg);
   border-top: 3px solid var(--di-red);
@@ -156,8 +156,8 @@
   line-height: 1.45;
 }
 
-/* NOTE: `strong` selector used for semantic HTML in Phase 1 placeholder content.
-   Phase 3 refactor will replace with explicit BEM classes when AI output is integrated. */
+/* NOTA: El selector `strong` se usa por HTML semántico en el contenido de marcador de la Fase 1.
+   El refactor de la Fase 3 lo sustituirá por clases BEM explícitas al integrar la salida de IA. */
 .di-panel__text strong {
   color: var(--di-red-light);
 }
@@ -188,15 +188,15 @@
   line-height: 1.4;
 }
 
-/* NOTE: `strong` selector used for semantic HTML in Phase 1 placeholder content.
-   Phase 3 refactor will replace with explicit BEM classes when AI output is integrated. */
+/* NOTA: El selector `strong` se usa por HTML semántico en el contenido de marcador de la Fase 1.
+   El refactor de la Fase 3 lo sustituirá por clases BEM explícitas al integrar la salida de IA. */
 .di-panel__score-label strong {
   color: var(--di-red-lighter);
   display: block;
   font-size: 0.75rem;
 }
 
-/* ─── Upgrade Prompt (shared — YouTube + Amazon) ── */
+/* ─── Prompt de Upgrade (compartido — YouTube + Amazon) ── */
 .di-upgrade {
   background: var(--di-bg);
   border: 1px solid var(--di-border);
@@ -216,8 +216,8 @@
   font-family: var(--di-font-mono);
 }
 
-/* NOTE: `strong` selector used for semantic HTML in Phase 1 placeholder content.
-   Phase 3 refactor will replace with explicit BEM classes when AI output is integrated. */
+/* NOTA: El selector `strong` se usa por HTML semántico en el contenido de marcador de la Fase 1.
+   El refactor de la Fase 3 lo sustituirá por clases BEM explícitas al integrar la salida de IA. */
 .di-upgrade__text strong {
   color: var(--di-text);
   display: block;

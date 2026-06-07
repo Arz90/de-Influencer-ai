@@ -1,9 +1,10 @@
 /**
- * De-Influencer AI — YouTube Module
- * Phase 1: MutationObserver + Brutal Card banner skeleton
- * Phase 3: Real AI analysis replaces placeholder text
+ * De-Influencer AI — Módulo YouTube
+ * Fase 1: MutationObserver + esqueleto del banner Brutal Card
+ * Fase 3: El análisis real de IA sustituye el texto de marcador
  */
 
+const DEBUG = true;
 const DI_DAILY_LIMIT = 5;
 const DI_INJECTED_ATTR = 'data-di-injected';
 const DI_REWRITTEN_ATTR = 'data-di-rewritten';
@@ -11,39 +12,52 @@ const DI_REWRITTEN_ATTR = 'data-di-rewritten';
 let currentUrl = location.href;
 let spaNavInterval = null;
 
-// ─── Entry Point ────────────────────────────────────────────────
+function log(...args) {
+  if (DEBUG) console.log('[DI YouTube]', ...args);
+}
+
+log('Script cargado en', location.href);
+
+// ─── Punto de entrada ────────────────────────────────────────────
 function init() {
+  log('Inicializando módulo YouTube');
   observeSpaNavigation();
   handlePageChange();
 }
 
-// ─── SPA Navigation: poll for URL changes ───────────────────────
-// YouTube pushes history without triggering standard navigation events.
-// URL polling is simpler and more reliable than a MutationObserver on ytd-app
-// for detecting /watch navigation specifically. Phase 3 may refine this.
+// ─── Navegación SPA: sondear cambios de URL ──────────────────────
+// YouTube empuja el historial sin disparar eventos de navegación estándar.
+// El sondeo de URL es más simple y fiable que un MutationObserver en ytd-app
+// para detectar específicamente la navegación a /watch. La Fase 3 puede refinarlo.
 function observeSpaNavigation() {
   spaNavInterval = setInterval(() => {
     if (location.href !== currentUrl) {
+      log('Cambio de URL detectado:', currentUrl, '→', location.href);
       currentUrl = location.href;
       handlePageChange();
     }
   }, 1000);
 }
 
-// ─── Page Change Handler ─────────────────────────────────────────
+// ─── Manejador de cambio de página ───────────────────────────────
 function handlePageChange() {
   rewriteFeedTitles();
 
-  if (!isWatchPage()) return;
+  if (!isWatchPage()) {
+    log('Página actual no es un vídeo — omitiendo inyección de banner');
+    return;
+  }
 
-  // #player-container-inner is the inner wrapper; #movie_player is the video element itself.
-  // Both are tried to handle YouTube DOM variations across page types.
+  log('Página de vídeo detectada — buscando elemento player');
+  // #player-container-inner es el contenedor interno; #movie_player es el elemento de vídeo en sí.
+  // Se prueban ambos para manejar las variaciones del DOM de YouTube según el tipo de página.
   waitForElement('#movie_player, #player-container-inner', (playerEl) => {
+    log('Player encontrado — procediendo a inyectar banner');
     injectBanner(playerEl);
   });
 }
 
-// ─── Title Rewriting (Feed + Search results) ────────────────────
+// ─── Reescritura de títulos (Feed + resultados de búsqueda) ─────
 function rewriteFeedTitles() {
   const selectors = [
     `ytd-rich-item-renderer a#video-title:not([${DI_REWRITTEN_ATTR}])`,
@@ -51,26 +65,32 @@ function rewriteFeedTitles() {
     `ytd-compact-video-renderer a#video-title:not([${DI_REWRITTEN_ATTR}])`
   ].join(', ');
 
-  document.querySelectorAll(selectors).forEach((el) => {
+  const elements = document.querySelectorAll(selectors);
+  log('Reescribiendo títulos — encontrados', elements.length, 'sin procesar');
+
+  elements.forEach((el) => {
     el.setAttribute(DI_REWRITTEN_ATTR, 'true');
-    // Phase 1: Static prefix. Phase 3: AI generates honest title
+    // Fase 1: prefijo estático. Fase 3: la IA genera el título honesto
     if (el.textContent && !el.textContent.startsWith('[HONESTO]')) {
       el.textContent = '[HONESTO] ' + el.textContent;
     }
   });
 }
 
-// ─── Banner Injection ────────────────────────────────────────────
+// ─── Inyección del banner ────────────────────────────────────────
 function injectBanner(playerEl) {
   const container = playerEl.parentElement;
   if (!container) return;
 
-  // Guard: don't inject twice on the same page
-  if (container.querySelector(`.di-banner[${DI_INJECTED_ATTR}], .di-upgrade[${DI_INJECTED_ATTR}]`)) return;
+  // Guardia: no inyectar dos veces en la misma página
+  if (container.querySelector(`.di-banner[${DI_INJECTED_ATTR}], .di-upgrade[${DI_INJECTED_ATTR}]`)) {
+    log('Banner ya inyectado en esta página — omitiendo');
+    return;
+  }
 
   chrome.storage.local.get(['usageCount', 'isPro'], (data) => {
     if (chrome.runtime.lastError) {
-      console.warn('[DI] YouTube: storage read failed, skipping injection');
+      console.warn('[DI YouTube] Error al leer almacenamiento — omitiendo inyección:', chrome.runtime.lastError);
       return;
     }
 
@@ -78,25 +98,36 @@ function injectBanner(playerEl) {
     const isPro = data.isPro || false;
     const limitReached = usageCount >= DI_DAILY_LIMIT && !isPro;
 
+    log('Almacenamiento leído — usageCount:', usageCount, '| isPro:', isPro, '| límite alcanzado:', limitReached);
+
+    if (limitReached) {
+      log('Límite diario alcanzado — mostrando prompt de upgrade');
+    } else {
+      log('Dentro del límite — inyectando banner de análisis');
+    }
+
     const el = limitReached ? buildUpgradePrompt() : buildBanner();
     container.insertBefore(el, playerEl);
+    log('Banner inyectado correctamente en el DOM');
 
     if (!limitReached) {
       chrome.storage.local.set({ usageCount: usageCount + 1 }, () => {
         if (chrome.runtime.lastError) {
-          console.warn('[DI] YouTube: storage write failed:', chrome.runtime.lastError);
+          console.warn('[DI YouTube] Error al incrementar contador:', chrome.runtime.lastError);
+          return;
         }
+        log('Contador incrementado a', usageCount + 1);
       });
     }
   });
 }
 
-// ─── Brutal Card Banner ──────────────────────────────────────────
+// ─── Banner Brutal Card ──────────────────────────────────────────
 function buildBanner() {
   const div = document.createElement('div');
   div.className = 'di-banner';
   div.setAttribute(DI_INJECTED_ATTR, 'true');
-  // Phase 1: placeholder text. Phase 3: replaced with real AI output
+  // Fase 1: texto de marcador. Fase 3: sustituido por la salida real de la IA
   div.innerHTML = `
     <div class="di-banner__icon">&#9888;</div>
     <div class="di-banner__content">
@@ -110,7 +141,7 @@ function buildBanner() {
   return div;
 }
 
-// ─── Upgrade Prompt ──────────────────────────────────────────────
+// ─── Prompt de upgrade ───────────────────────────────────────────
 function buildUpgradePrompt() {
   const div = document.createElement('div');
   div.className = 'di-upgrade';
@@ -139,10 +170,10 @@ function waitForElement(selector, callback, maxAttempts = 20) {
       callback(el);
     } else if (++attempts >= maxAttempts) {
       clearInterval(interval);
-      console.warn('[DI] YouTube: element not found:', selector);
+      console.warn('[DI YouTube] Elemento no encontrado tras', maxAttempts, 'intentos:', selector);
     }
   }, 300);
 }
 
-// ─── Start ───────────────────────────────────────────────────────
+// ─── Inicio ───────────────────────────────────────────────────────
 init();
