@@ -98,10 +98,11 @@ function detectSpamScore(resultEl) {
   }
 
   // Señal 3: indicadores de afiliado en el href del enlace principal
-  // Se comprueba el atributo href, no el texto visible — utm_ solo aparece en la URL
+  // Se comprueba el atributo href — los parámetros utm_ solo aparecen en la URL.
+  // Se excluye ref= por ser demasiado genérico (muchos sitios legítimos lo usan).
   const anchor = resultEl.querySelector('a[href]');
   const href = anchor ? (anchor.getAttribute('href') || '') : '';
-  if (/\b(afiliado|aff=|ref=|utm_)/i.test(href)) {
+  if (/\b(afiliado|aff=)|[?&]utm_/i.test(href)) {
     score++;
     log('Señal 3 (URL afiliado):', href);
   }
@@ -136,7 +137,7 @@ function applyBlurOverlay(resultEl) {
   const overlay = document.createElement('div');
   overlay.className = 'di-google-overlay';
   overlay.innerHTML = `
-    <span class="di-google-badge">&#9888; SEO SPAM</span>
+    <span class="di-google-overlay__badge">&#9888; SEO SPAM</span>
     <span class="di-google-overlay__text">Granja de contenido detectada</span>
     <button class="di-google-overlay__reveal">mostrar &#8594;</button>
   `;

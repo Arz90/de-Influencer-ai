@@ -22,6 +22,9 @@
   --di-red-lighter: #ff9999;
   --di-white: #ffffff;
   --di-reddit: #ff4500;
+  --di-overlay-bg: rgba(255, 255, 255, 0.78);
+  --di-overlay-text: #333333;
+  --di-overlay-text-dim: #666666;
 }
 
 /* ─── Banner Brutal Card (YouTube) ──────────────── */
@@ -304,7 +307,7 @@
 .di-google-overlay {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(255, 255, 255, 0.78);
+  background: var(--di-overlay-bg); /* Google renders on white; this overlay needs a light background */
   display: flex;
   align-items: center;
   gap: 10px;
@@ -312,7 +315,7 @@
   box-sizing: border-box;
 }
 
-.di-google-badge {
+.di-google-overlay__badge {
   background: var(--di-red);
   color: var(--di-white);
   font-size: 0.62rem;
@@ -327,14 +330,14 @@
 
 .di-google-overlay__text {
   font-size: 0.72rem;
-  color: #333;
+  color: var(--di-overlay-text);
   font-family: var(--di-font-mono);
 }
 
 .di-google-overlay__reveal {
   margin-left: auto;
   font-size: 0.65rem;
-  color: #666;
+  color: var(--di-overlay-text-dim);
   text-decoration: underline;
   cursor: pointer;
   background: none;
@@ -346,5 +349,5 @@
 }
 
 .di-google-overlay__reveal:hover {
-  color: #333;
+  color: var(--di-overlay-text);
 }
