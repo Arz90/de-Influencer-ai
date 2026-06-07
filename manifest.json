@@ -17,13 +17,13 @@
   "content_scripts": [
     {
       "matches": ["https://www.youtube.com/*"],
-      "js": ["content/youtube.js"],
+      "js": ["content/utils.js", "content/youtube.js"],
       "css": ["styles/styles.css"],
       "run_at": "document_idle"
     },
     {
       "matches": ["https://www.google.com/search*"],
-      "js": ["content/google.js"],
+      "js": ["content/utils.js", "content/google.js"],
       "css": ["styles/styles.css"],
       "run_at": "document_idle"
     },
@@ -33,7 +33,7 @@
         "https://www.amazon.com/*",
         "https://www.amazon.co.uk/*"
       ],
-      "js": ["content/amazon.js"],
+      "js": ["content/utils.js", "content/amazon.js"],
       "css": ["styles/styles.css"],
       "run_at": "document_idle"
     }
