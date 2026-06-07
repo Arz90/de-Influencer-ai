@@ -1,0 +1,225 @@
+/* ════════════════════════════════════════════════
+   De-Influencer AI — Design System
+   Cyber-Punk Alert Aesthetic
+   ════════════════════════════════════════════════ */
+
+:root {
+  --di-bg: #0d0d0d;
+  --di-bg-card: linear-gradient(135deg, #1a0505 0%, #120c1a 100%);
+  --di-red: #ff1a1a;
+  --di-red-dim: rgba(255, 26, 26, 0.15);
+  --di-red-border: rgba(255, 26, 26, 0.3);
+  --di-neon: #ff00aa;
+  --di-text: #e0e0e0;
+  --di-text-dim: #888888;
+  --di-border: #3a1a1a;
+  --di-radius: 6px;
+  --di-font-mono: 'Courier New', monospace;
+}
+
+/* ─── Brutal Card Banner (YouTube) ─────────────── */
+.di-banner {
+  width: 100%;
+  background: var(--di-bg-card);
+  border: 1px solid var(--di-border);
+  border-radius: var(--di-radius);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 14px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.di-banner::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--di-red), var(--di-neon), transparent);
+}
+
+.di-banner__icon {
+  background: var(--di-red-dim);
+  border: 1px solid var(--di-red-border);
+  border-radius: 4px;
+  width: 32px; height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+  color: var(--di-red);
+}
+
+.di-banner__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.di-banner__title {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--di-red);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: var(--di-font-mono);
+  margin-bottom: 4px;
+}
+
+.di-banner__body {
+  font-size: 0.78rem;
+  color: var(--di-text);
+  line-height: 1.5;
+  font-family: var(--di-font-mono);
+}
+
+.di-banner__badge {
+  background: linear-gradient(90deg, var(--di-red), #cc0055);
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  align-self: center;
+  font-family: var(--di-font-mono);
+}
+
+/* ─── Amazon Lateral Panel ──────────────────────── */
+.di-panel {
+  background: var(--di-bg);
+  border-top: 3px solid var(--di-red);
+  border-radius: 0 0 var(--di-radius) var(--di-radius);
+  padding: 12px 14px;
+  margin-top: 8px;
+  box-sizing: border-box;
+}
+
+.di-panel__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.di-panel__logo {
+  font-size: 0.6rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: var(--di-red);
+  text-transform: uppercase;
+  background: var(--di-red-dim);
+  border: 1px solid var(--di-red-border);
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-family: var(--di-font-mono);
+}
+
+.di-panel__title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--di-text);
+}
+
+.di-panel__item {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 7px;
+}
+
+.di-panel__bullet {
+  width: 18px; height: 18px;
+  background: var(--di-red-dim);
+  border: 1px solid var(--di-red-border);
+  border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem;
+  flex-shrink: 0;
+  color: var(--di-red);
+}
+
+.di-panel__text {
+  font-size: 0.72rem;
+  color: #bbb;
+  line-height: 1.45;
+}
+
+.di-panel__text strong {
+  color: #ff5555;
+}
+
+.di-panel__score {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #1f1f1f;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.di-panel__score-circle {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--di-red);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 900;
+  color: #ff5555;
+  flex-shrink: 0;
+}
+
+.di-panel__score-label {
+  font-size: 0.65rem;
+  color: var(--di-text-dim);
+  line-height: 1.4;
+}
+
+.di-panel__score-label strong {
+  color: #ff9999;
+  display: block;
+  font-size: 0.75rem;
+}
+
+/* ─── Upgrade Prompt (shared — YouTube + Amazon) ── */
+.di-upgrade {
+  background: var(--di-bg);
+  border: 1px solid var(--di-border);
+  border-left: 3px solid var(--di-red);
+  border-radius: var(--di-radius);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+.di-upgrade__text {
+  flex: 1;
+  font-size: 0.75rem;
+  color: var(--di-text-dim);
+  font-family: var(--di-font-mono);
+}
+
+.di-upgrade__text strong {
+  color: var(--di-text);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.di-upgrade__cta {
+  background: linear-gradient(90deg, var(--di-red), #cc0055);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: var(--di-font-mono);
+}
