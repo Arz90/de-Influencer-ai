@@ -15,6 +15,11 @@
   --di-border: #3a1a1a;
   --di-radius: 6px;
   --di-font-mono: 'Courier New', monospace;
+  --di-neon-dark: #cc0055;
+  --di-text-mid: #bbbbbb;
+  --di-divider: #1f1f1f;
+  --di-red-light: #ff5555;
+  --di-red-lighter: #ff9999;
 }
 
 /* ─── Brutal Card Banner (YouTube) ─────────────── */
@@ -76,7 +81,7 @@
 }
 
 .di-banner__badge {
-  background: linear-gradient(90deg, var(--di-red), #cc0055);
+  background: linear-gradient(90deg, var(--di-red), var(--di-neon-dark));
   color: #fff;
   font-size: 0.6rem;
   font-weight: 900;
@@ -123,6 +128,7 @@
   font-size: 0.72rem;
   font-weight: 700;
   color: var(--di-text);
+  font-family: var(--di-font-mono);
 }
 
 .di-panel__item {
@@ -145,18 +151,20 @@
 
 .di-panel__text {
   font-size: 0.72rem;
-  color: #bbb;
+  color: var(--di-text-mid);
   line-height: 1.45;
 }
 
+/* NOTE: `strong` selector used for semantic HTML in Phase 1 placeholder content.
+   Phase 3 refactor will replace with explicit BEM classes when AI output is integrated. */
 .di-panel__text strong {
-  color: #ff5555;
+  color: var(--di-red-light);
 }
 
 .di-panel__score {
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px solid #1f1f1f;
+  border-top: 1px solid var(--di-divider);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -169,7 +177,7 @@
   display: flex; align-items: center; justify-content: center;
   font-size: 0.9rem;
   font-weight: 900;
-  color: #ff5555;
+  color: var(--di-red-light);
   flex-shrink: 0;
 }
 
@@ -179,8 +187,10 @@
   line-height: 1.4;
 }
 
+/* NOTE: `strong` selector used for semantic HTML in Phase 1 placeholder content.
+   Phase 3 refactor will replace with explicit BEM classes when AI output is integrated. */
 .di-panel__score-label strong {
-  color: #ff9999;
+  color: var(--di-red-lighter);
   display: block;
   font-size: 0.75rem;
 }
@@ -205,6 +215,8 @@
   font-family: var(--di-font-mono);
 }
 
+/* NOTE: `strong` selector used for semantic HTML in Phase 1 placeholder content.
+   Phase 3 refactor will replace with explicit BEM classes when AI output is integrated. */
 .di-upgrade__text strong {
   color: var(--di-text);
   display: block;
@@ -212,7 +224,7 @@
 }
 
 .di-upgrade__cta {
-  background: linear-gradient(90deg, var(--di-red), #cc0055);
+  background: linear-gradient(90deg, var(--di-red), var(--di-neon-dark));
   color: #fff;
   border: none;
   border-radius: 4px;
