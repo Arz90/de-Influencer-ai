@@ -1,0 +1,59 @@
+{
+  "manifest_version": 3,
+  "name": "De-Influencer AI",
+  "version": "0.1.0",
+  "description": "Rompe la matrix del marketing. Descubre por qué quieren tu dinero.",
+  "permissions": ["storage", "alarms"],
+  "host_permissions": [
+    "https://www.youtube.com/*",
+    "https://www.google.com/*",
+    "https://www.amazon.es/*",
+    "https://www.amazon.com/*",
+    "https://www.amazon.co.uk/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["content/youtube.js"],
+      "css": ["styles/styles.css"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://www.google.com/search*"],
+      "js": ["content/google.js"],
+      "css": ["styles/styles.css"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://www.amazon.es/*",
+        "https://www.amazon.com/*",
+        "https://www.amazon.co.uk/*"
+      ],
+      "js": ["content/amazon.js"],
+      "css": ["styles/styles.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "De-Influencer AI",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}
