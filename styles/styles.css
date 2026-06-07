@@ -251,7 +251,9 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 12px;
+  margin: 0 0 16px 0;
+  position: relative;
+  z-index: 100;
   box-sizing: border-box;
   font-family: var(--di-font-mono);
 }
